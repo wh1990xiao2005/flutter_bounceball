@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -30,11 +31,17 @@ class BounceBall extends StatefulWidget {
 }
 
 class _BounceBallState extends State<BounceBall> {
-  double _x=0, _y=0, _size=0;
+  final double _speed = 5;
 
-  Color _color=Color.fromARGB(0, 0, 0, 0);
+  double _x = 0, _y = 0, _size = 0;
 
-  Timer _runTimer;
+  double _step_x, _step_y, _angle;
+
+  Color _color = Color.fromARGB(0, 0, 0, 0);
+
+  bool _auto_change_color = false;
+
+  bool _keep_move = true;
 
   double screenX, screenY;
 
@@ -44,6 +51,7 @@ class _BounceBallState extends State<BounceBall> {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       generateBall();
       changeColor();
+      calculateMoveAngle();
       startMove();
     });
   }
@@ -62,14 +70,21 @@ class _BounceBallState extends State<BounceBall> {
         // 改变小球颜色
         changeColor();
       },
+      onDoubleTap: () {
+        // 暂停/恢复移动
+        _keep_move = !_keep_move;
+      },
+      onLongPress: () {
+        // 自动改变小球颜色
+        _auto_change_color = !_auto_change_color;
+      },
     ));
   }
 
   // 开始移动
   void startMove() {
-    _runTimer = Timer.periodic(Duration(milliseconds: 16), (timer) {
-      _x += 1;
-      _y += 1;
+    Timer.periodic(Duration(milliseconds: 16), (timer) {
+      moveBall();
       setState(() {});
     });
   }
@@ -82,8 +97,32 @@ class _BounceBallState extends State<BounceBall> {
 
   // 生成小球初始位置和大小
   void generateBall() {
+    _size = Random().nextDouble() * (screenY - screenX).abs();
     _x = Random().nextDouble() * screenX;
     _y = Random().nextDouble() * screenY;
-    _size = Random().nextDouble() * (screenY - screenX).abs();
+  }
+
+  // 计算小球初始移动角度（方向）
+  void calculateMoveAngle() {
+    _angle = Random().nextDouble() * 360;
+    _step_x = sin(_angle) * _speed;
+    _step_y = cos(_angle) * _speed;
+  }
+
+  // 带有便捷判定的小球移动
+  void moveBall() {
+    if (_keep_move) {
+      if (_x >= screenX || _x <= 0) {
+        _step_x = 0 - _step_x;
+      }
+      _x += _step_x;
+      if (_y >= screenY || _y <= 0) {
+        _step_y = 0 - _step_y;
+      }
+      _y += _step_y;
+      if (_auto_change_color) {
+        changeColor();
+      }
+    }
   }
 }
