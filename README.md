@@ -1,16 +1,16 @@
 # flutter_bounceball
 
-A new Flutter project.
+An interesting ball that never stop bounce, just like Pinball.    
+This App was built with Flutter, use Canvas and Painter API.
 
-## Getting Started
+## Introduction(Goal)
 
-This project is a starting point for a Flutter application.
+1. After App launched, a ball will disappeared on your screen;   
+2. The ball will change color and size when you re-launch the App;   
+3. The ball will change color only if you touch screen;    
+4. The movement of the ball is like Pinball or tennis game, which is very common;   
 
-A few resources to get you started if this is your first Flutter project:
+## Notice   
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+This App and code are not of practical use, however it really a good resources for learning Flutter and its APIs.   
+If you have a better solution, don't hesitate to let me know. Thank you for your contribution.   
